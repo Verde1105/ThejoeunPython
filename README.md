@@ -96,10 +96,10 @@ git push origin master
 
 - 6.1 아래와 같은 에러가 발생한 경우
 ```
-error: src refspec main does not match any
+error: src refspec master does not match any
 ```
 - 6.2 똑같은 이름의 브랜치를 생성 후 switch를 한다.
 ```
-git checkout -b 'main'
+git checkout -b 'master'
 ```
 - 6.3 다시 push 명령어 진행
