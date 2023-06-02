@@ -14,9 +14,10 @@ else :
     g = '가'
 '''
 
-li = [range(-99)]
+li = []
 lie = [x-4 for x in li if x <= 0]
-
+for i in range(4):
+    l.append(i * i)
 print(lie[:])
 
 
