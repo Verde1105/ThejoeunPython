@@ -14,5 +14,27 @@ for ele in range(len(li)):
 #n_list = [x * 3 for x in li if x >= 1]
 
 star = "*"
-a =[i for i in star if i +"\n" ]
-print(a*10)
+#a =[i for i in star if i +"\n" ]
+for a in star:
+    print(a*2)
+    for b in star:
+        print(b)
+
+size = 5  # 별의 크기 설정
+
+for i in range(size):
+    for j in range(i + 1):
+        print("*", end=" ")
+    print()
+
+size = 5  # 별의 크기 설정
+
+for i in range(size):
+    print(" " * (size - i - 1), end="")
+    print("*" * (2 * i + 1))
+
+size = 5  # 별의 크기 설정
+
+for _ in range(size):
+    stars = ["*"] * size  # 별로 이루어진 리스트 생성
+    print(" ".join(stars))
