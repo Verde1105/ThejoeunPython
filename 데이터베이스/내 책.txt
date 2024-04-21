@@ -1,0 +1,207 @@
+use book;
+
+create table salesman (#사원정보를 저장하기 위한 salesman 테이블을 생성한다.
+id char(6),
+name varchar2(12),
+age number(3),
+address varchar2(60)
+);
+commit;
+desc salesman;
+
+#게시판 정보를 저장하기 위한 board 테이블을 생성한다.
+create table board (
+num number(4),
+title varchar2(30),
+author varchar2(12),
+content varchar2(600),
+writeday date default sysdate
+);
+desc board;
+
+#테이블 만드는 형식: 
+#create table 테이블명 ( 만들 테이블 명 적는 곳
+#column1 datatype primary key, 컬럼명 데이터타입(인트인지 스트링인지 등등) 속성(프라이머리인지, 유니크인지, 낫 널인지 등등)
+#column2 datatype [default 값], 보통 이런 디폴트값은 날자에 많이 사용한다.
+#column3 datatype not null, 입력되는 값이 널값을 입력할수없다.
+#columnN datatype 이런식으로 속성 없이도 칼럼을 만들 수 있다.
+#);
+
+
+
+
+
+
+#얼터테이블 형식(테이블 수정)에드//모디파이//드롭//얼터테이블
+#alter table 테이블명 (  제약조건에 붙은 [] 대괄호는 무시, 가독성을 위해 묶어둔것일뿐.
+#add (column datatype); 데이터타입이 지정된 칼럼을 추가하는 문구(칼럼명 마음대로가능)
+#add [constraint 제약조건명] 제약조건 (column); 특정 칼럼에 제약조건을 추가한다.??
+#modify (column [제약조건]); 특정 칼럼의 제약조건을 수정한다.
+#drop (column); 특정 칼럼을 삭제한다.
+#);
+
+#에드문 형식(칼럼 혹은 제약조건 추가문)
+#alter table 테이블명 (  제약조건에 붙은 [] 대괄호는 무시, 가독성을 위해 묶어둔것일뿐.
+#add (column datatype);  데이터의 타입이 지정된 칼럼을 추가한다.(칼럼명 마음대로가능)
+#add [constraint 제약조건명] 제약조건 (column);  특정 칼럼에 제약조건을 추가한다?
+#);
+
+#salesman 테이블에 sal 컬럼을 추가한다.
+alter table salesman
+add (sal number(7, 2));
+desc salesman;
+
+#모디파이문(칼럼이나 제약조건을 수정하는 문)
+#alter table 테이블명 (
+#modify (column [제약조건]); 특정 칼럼에 제약조건을 수정한다.
+#);
+
+#salesman 테이블에 sal 컬럼의 최대 자릿수를 10 자리로 수정한다.
+alter table salesman
+modify (sal number(10, 2));
+desc salesman;
+
+#드롭문(칼럼 삭제문)
+#alter table 테이블명 (
+#drop (column); 칼럼을 삭제하는 문구
+#);
+
+#salesman 테이블에 sal 컬럼을 삭제한다.
+alter table salesman
+drop (sal);
+desc salesman;
+
+#얼터테이블문 (테이블 수정문)
+#drop table 테이블명; 이제는 바로 삭제되는게 아니라, recyclebin 이라는 휴지통에 보관된다.
+#show recyclebin; 휴지통인 recyclebin 내부에 어떤것이 있는지, 삭제될때가 언제인지 등의 정보를 확인하는 문구
+#flashback 테이블명 to before drop; recyclebin에 있는 사겢된 테이블을 복구
+#purge recyclebin; 휴지통 속 내용물을 삭제 
+
+#salesman 테이블을 삭제한다.
+drop table salesman;
+select * from tab;
+
+#쇼문 (휴지통 확인)
+#show recyclebin; 휴지통 속 내용물과 정보를 확인 
+
+#recyclebin 에서 삭제된 salesman 테이블의 정보를 확인한다.
+show recyclebin;
+
+#플래쉬 백문 (삭제된 테이블 복구문)
+#flashback 테이블명 to before drop; 휴지통 속 내용물을 복구한다.
+
+#삭제된 salesman 테이블을 복구한다.
+flashback table salesman to before drop;
+select * from tab;
+
+#플러그 문(완전삭제 문)
+#purge recyclebin; 휴지통 속 내용물을 완전 삭제하는 문구, 되돌릴 수 없다.
+
+#salesman 테이블을 완전히 삭제한다.
+drop table salesman;
+purge recyclebin;
+select * from tab;
+
+
+
+#테이블 수정
+
+#리네임 투 문(테이블명 변경을 위한 문)
+#rename 변경 전 테이블명 to 변경 후 테이블명; 바꿀 테이블명을 말해주고, 이후 바꾸고 싶은 이름을 선언한다.
+
+#board 테이블의 이름을 변경한다.
+rename board to copy_board;
+
+#턴캣문 (저장공간 삭제 문)
+#truncate table 테이블명; 삭제된 테이블은 데이터 + 저장구조 모두가 삭제되어 메모리 효율적 관리가 가능.
+
+#copy_board 테이블의 저장 공간을 삭제한다.
+truncate table copy_board;
+
+
+#제약조건 지정방식
+
+#칼럼레벨방식 = 칼럼생성과 동시에 제약조건 동시 지정
+#create table 테이블명 (
+#column1 datatype [constraint 제약조건명] 제약조건,
+#column2 datatype,
+#column3 datatype,
+#columnN datatype
+#);
+
+#테이블 레벨 방식 = 칼럼 모두 생성 후, 나중에 제약조건 추가. 제약조건명은 생략가능.
+#create table 테이블명 (
+#column1 datatype,
+#column2 datatype,
+#column3 datatype,
+#columnN datatype
+#[constraint 제약조건명] 제약조건(column1)
+#);
+
+#컬럼 레벨 방식으로 제약조건을 지정하여 customer 테이블을 생성한다.
+create table customer (
+num number(4) primary key,
+name varchar2(12) not null,
+address varchar2(60) unique,
+age number(3) check(age >= 30)
+);
+
+
+#샐랙트문 (찾을때)  대괄호는 전부 생략 가능하다. 
+#select [distinct] *|columns [as 별칭] from tables; distinct는 중복방지, as는 생략 가능하다.
+
+#특정칼럼조회
+#select column1, column2,…columnN from table; 조회하고자 하는 칼럼명들을 지정.
+
+#emp 테이블에서 사원번호와 사원명을 조회한다.
+select empno, ename from emp;
+
+
+#모든 컬럼의 조회
+#select * from table; 에스터리스크 = 전부. 모든 컬럼을 조회한다.
+
+#emp 테이블에서 모든 사원의 컬럼 내용을 조회한다.
+select * from emp;
+
+#칼럼값의 중복 제거 조회
+#select distinct column table; distinct가 중복을 없애는 명령어이다.
+
+#emp 테이블에서 사원의 직급이 중복되는 값이 없도록 조회한다.
+select distinct job from emp;
+
+#컬럼명 별칭 적용법
+#select column1 [as] alias, column2 [as] alias… columnN [as] alias from table; as로 원하는 별칭을 만들수있다. 공백이나 특수문자를 쓰려면 ""를 써줘야한다.
+
+#dept 테이블에서 컬럼명 대신에 별칭을 이용해서 조회한다.
+select dname as 부서명, loc as "부서 위치" from dept;
+
+
+#산술연산자
+
+#emp 테이블에서 사원의 연봉을 산술 연산자를 적용하여 조회한다.
+select ename, sal, sal*12 from emp;
+
+#emp 테이블에서 커미션을 추가한 연봉을 조회하고 null 이면 null 값을 조회한다.
+#특정 컬럼에 대한 컬럼값이 없는 경우 해당 값이 null 이거나 null 을 포함한다.
+#null 은 할당되지 않았거나 알 수 없는 값이다.
+#null 은 0 이나 공백과는 다르며 0 은 숫자이며 공백은 문자이다.
+#모든 컬럼은 null 을 포함할 수 있지만, 제약조건인 not null 이나 primary key 가 지정된
+#컬럼에서는 null 을 사용할 수 없다.
+select ename, sal, sal*12, comm, sal*12+comm from emp;
+
+#샐렉트 웨어 문(찾아라! 지정된곳에 ~~이 있다면.)
+#select [distinct] *|columns [as 별칭] from tables컬럼은 하나 이상의 컬럼으로 이루어진 리스트
+#where 조건식;
+
+
+
+
+
+
+#연결연산자
+
+#||(더블 버티컬바) 연산자로 컬럼이나 컬럼값을 다른 컬럼이나 컬럼값에 연결한다.
+#더블 버티컬바 연산자로 연결된 컬럼은 단일 출력 컬럼이 된다.
+
+#emp 테이블에서 특정 컬럼을 더블 버티컬바 연산자로 연결하여 조회한다.
+select empno||'-'||ename as 명단 from emp;

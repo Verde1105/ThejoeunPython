@@ -1,0 +1,22 @@
+use app;
+
+SELECT id, 아이디, 비밀번호, 잔고, 계좌번호
+FROM app.del;
+
+
+select * from del;
+
+delete from del
+where id = 2 or id = 3;
+
+select * from jmtest1 ;
+select * from jmtest2 ;
+
+select j.id as '1아이디', j.name as '1이름', j2.id as '2아이디', j2.name as '2이름' from jmtest1 j , jmtest2 j2 
+where j.id = j2.id ;
+
+select j.id as '1아이디', j.name as '1이름', j2.id as '2아이디', j2.name as '2이름'
+from jmtest1 j 
+left outer join jmtest2 j2 
+on j.id = j2.id ;
+
